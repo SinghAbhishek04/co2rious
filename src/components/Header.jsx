@@ -25,7 +25,7 @@ export default function Header() {
               <Info className="w-5 h-5 sm:hidden" />
             </a>
             <a
-              href="https://github.com"
+              href="https://github.com/SinghAbhishek04/co2nvert"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors duration-200"
