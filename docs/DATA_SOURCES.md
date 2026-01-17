@@ -1,4 +1,4 @@
-# CO₂nvert Data Sources
+# CO₂rious Data Sources
 
 ## Activity Emissions Data
 
@@ -7,24 +7,24 @@
 | Activity | CO₂/unit | Range | Source |
 |----------|----------|-------|--------|
 | Elevator (per floor) | 5g | 3-8g | Energy calculation: 0.005 kWh × 500g CO₂/kWh |
-| Driving (per km) | 120g | 80-200g | EPA Average Vehicle Emissions (2023) |
-| Metro/Subway (per km) | 14g | 10-20g | UK DEFRA Conversion Factors (2023) |
+| Driving (per km) | 160g | 120-250g | UK DEFRA Conversion Factors (2023), medium car petrol |
+| Metro/Subway (per km) | 28g | 20-40g | UK DEFRA Conversion Factors (2023), light rail/tram |
 
 ### Food & Drink
 
 | Activity | CO₂/unit | Range | Source |
 |----------|----------|-------|--------|
-| Black coffee | 21g | 15-40g | Hassard et al. (2014), Int J Life Cycle Assess |
-| Latte (dairy) | 340g | 250-500g | Carbon Trust (2022) |
-| Beef burger | 3,500g | 2,500-5,000g | Poore & Nemecek (2018), Science |
+| Black coffee | 300g | 200-400g | Poore & Nemecek (2018), Science, full supply chain LCA |
+| Latte (dairy) | 900g | 700-1,200g | Poore & Nemecek (2018), coffee + 250ml dairy milk |
+| Beef burger | 9,000g | 6,000-12,000g | Poore & Nemecek (2018), Science, 150g patty + bun |
 | Vegetarian meal | 450g | 300-700g | Our World in Data (2022) |
 
 ### Home Energy
 
 | Activity | CO₂/unit | Range | Source |
 |----------|----------|-------|--------|
-| Boiling water (per L) | 35g | 25-50g | Energy calculation: ~0.1 kWh × grid average |
-| Dishwasher cycle | 770g | 500-1,200g | Energy Star (2023) |
+| Boiling water (per L) | 50g | 30-70g | Energy calculation: ~0.1 kWh × 500g CO₂/kWh world avg |
+| Dishwasher cycle | 550g | 400-800g | Energy Star (2023), modern efficient ~1.1 kWh/cycle |
 
 ### Digital
 
@@ -36,14 +36,14 @@
 
 | Equivalency | CO₂ per unit | Source |
 |-------------|--------------|--------|
-| Driving | 120g/km | EPA |
-| Phone charging | 8.5g/charge | ~10Wh battery × grid average |
-| Tree absorption | 0.5g/hour | ~22kg CO₂/year per tree ÷ 8760 hours |
+| Driving | 160g/km | UK DEFRA 2023 |
+| Phone charging | 7g/charge | Apple specs (~14Wh) × OWID grid avg |
+| Tree absorption | 2.5g/hour | US Forest Service (~22kg CO₂/year per mature tree) |
 | Video streaming | 55g/hour | IEA |
 | LED bulb | 5g/hour | 10W × 500g/kWh |
 | Google search | 0.2g/search | Google sustainability reports |
-| Flying (economy) | 255g/km | DEFRA aviation factors |
-| CO₂ balloon | 10g/balloon | Volume calculation |
+| Flying (economy) | 185g/km | UK DEFRA 2023, economy class average |
+| CO₂ balloon | 28g/balloon | Engineering Toolbox, standard 11" balloon |
 
 ## Reference Values
 

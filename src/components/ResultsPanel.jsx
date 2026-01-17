@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Info, ExternalLink, HelpCircle } from 'lucide-react';
-import { ACTIVITIES, CATEGORIES, calculateCO2, calculateCO2Range } from '../data/activities';
+import { ACTIVITIES, CATEGORIES } from '../data/activities';
 import { generateEquivalents, formatCO2 } from '../data/equivalencies';
 import EquivalencyCard from './EquivalencyCard';
 import ImpactContext from './ImpactContext';
 import TimeMultiplier from './TimeMultiplier';
 import ShareButton from './ShareButton';
+import { usePreferences } from '../context/PreferencesContext';
+import { calculateCO2, calculateCO2Range } from '../utils/co2Calculator';
+import { getDisplayUnit, getDisplayUnitPlural } from '../config/units';
 
 export default function ResultsPanel({ selectedActivity, quantity }) {
   const [showRangeTooltip, setShowRangeTooltip] = useState(false);
+  const { country, unitSystem } = usePreferences();
 
   if (!selectedActivity) {
     return (
@@ -28,12 +32,14 @@ export default function ResultsPanel({ selectedActivity, quantity }) {
 
   const activity = ACTIVITIES[selectedActivity];
   const category = CATEGORIES[activity.category];
-  const totalCO2 = calculateCO2(selectedActivity, quantity);
-  const co2Range = calculateCO2Range(selectedActivity, quantity);
+  const totalCO2 = calculateCO2(activity, quantity, country.code, unitSystem);
+  const co2Range = calculateCO2Range(activity, quantity, country.code, unitSystem);
   const formatted = formatCO2(totalCO2);
-  const equivalencies = generateEquivalents(totalCO2, 4);
+  const equivalencies = generateEquivalents(totalCO2, 4, unitSystem);
 
-  const unitLabel = quantity === 1 ? activity.unit : activity.unit_plural;
+  const displayUnit = getDisplayUnit(activity.unit, unitSystem);
+  const displayUnitPlural = getDisplayUnitPlural(activity.unit_plural, unitSystem);
+  const unitLabel = quantity === 1 ? displayUnit : displayUnitPlural;
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">

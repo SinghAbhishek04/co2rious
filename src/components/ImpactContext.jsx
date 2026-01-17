@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
 import { Info, AlertTriangle, CheckCircle, AlertCircle } from 'lucide-react';
-
-// Daily average: 6.6 tonnes/year ÷ 365 = ~18kg/day = 18,000g/day
-const DAILY_AVERAGE_GRAMS = 18000;
+import { usePreferences } from '../context/PreferencesContext';
 
 // Impact thresholds (as percentage of daily average)
 const THRESHOLDS = {
@@ -14,7 +12,11 @@ const THRESHOLDS = {
 };
 
 export default function ImpactContext({ co2Grams }) {
-  const percentOfDaily = (co2Grams / DAILY_AVERAGE_GRAMS) * 100;
+  const { country } = usePreferences();
+
+  // Daily average based on country's yearly average
+  const dailyAverageGrams = (country.yearlyAverageKg * 1000) / 365;
+  const percentOfDaily = (co2Grams / dailyAverageGrams) * 100;
 
   let level, color, bgColor, borderColor, Icon, message;
 
@@ -70,8 +72,8 @@ export default function ImpactContext({ co2Grams }) {
       </div>
       <div className="relative group">
         <Info className="w-4 h-4 text-slate-400 cursor-help" />
-        <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-slate-900 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
-          Based on global average of 6.6 tonnes CO₂ per person per year (~18kg/day)
+        <div className="absolute bottom-full right-0 mb-2 w-52 p-2 bg-slate-900 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+          Based on {country.name} average of {(country.yearlyAverageKg / 1000).toFixed(1)}t CO₂/year (~{Math.round(dailyAverageGrams / 1000)}kg/day)
           <div className="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-900"></div>
         </div>
       </div>

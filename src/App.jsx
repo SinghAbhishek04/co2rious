@@ -7,8 +7,9 @@ import ComparePanel from './components/ComparePanel';
 import QuickCompare from './components/QuickCompare';
 import Footer from './components/Footer';
 import { ACTIVITIES } from './data/activities';
+import { PreferencesProvider } from './context/PreferencesContext';
 
-function App() {
+function AppContent() {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [compareMode, setCompareMode] = useState(false);
@@ -154,6 +155,14 @@ function App() {
 
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <PreferencesProvider>
+      <AppContent />
+    </PreferencesProvider>
   );
 }
 

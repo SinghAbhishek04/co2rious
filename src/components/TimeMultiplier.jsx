@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, TrendingUp } from 'lucide-react';
 import { formatCO2 } from '../data/equivalencies';
+import { usePreferences } from '../context/PreferencesContext';
 
 const TIME_PERIODS = [
   { id: 'once', label: 'Once', multiplier: 1 },
@@ -10,18 +11,19 @@ const TIME_PERIODS = [
   { id: 'monthly', label: 'Monthly', multiplier: 12 },
 ];
 
-// Global average is ~6.6 tonnes per person per year = 6,600,000g
-const YEARLY_AVERAGE_GRAMS = 6600000;
-
 export default function TimeMultiplier({ baseCO2, activityName }) {
   const [selectedPeriod, setSelectedPeriod] = useState('once');
+  const { country } = usePreferences();
+
+  // Use country-specific yearly average (in grams)
+  const yearlyAverageGrams = country.yearlyAverageKg * 1000;
 
   const period = TIME_PERIODS.find(p => p.id === selectedPeriod);
   const yearlyTotal = baseCO2 * period.multiplier;
   const formatted = formatCO2(yearlyTotal);
 
-  // Calculate percentage of global average
-  const percentOfAverage = ((yearlyTotal / YEARLY_AVERAGE_GRAMS) * 100);
+  // Calculate percentage of country-specific average
+  const percentOfAverage = ((yearlyTotal / yearlyAverageGrams) * 100);
 
   // Format the percentage nicely
   const formattedPercent = percentOfAverage >= 1
@@ -87,7 +89,7 @@ export default function TimeMultiplier({ baseCO2, activityName }) {
             </div>
             <div className="flex justify-between mt-1 text-xs text-amber-600">
               <span>0%</span>
-              <span>Global avg (6.6t/year)</span>
+              <span>{country.name} avg ({(country.yearlyAverageKg / 1000).toFixed(1)}t/year)</span>
             </div>
           </div>
 

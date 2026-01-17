@@ -19,7 +19,7 @@ export default function ShareButton({ activityId, quantity }) {
 
 That's like ${equivalencies[0]?.text || 'a lot'}!
 
-Check your carbon footprint at CO₂nvert`;
+Check your carbon footprint at CO₂rious`;
 
   const handleCopy = async () => {
     try {

@@ -1,24 +1,30 @@
 // Equivalencies database for relatable comparisons
 // All CO2 values in grams
 
+// Conversion constants
+const KM_TO_MILES = 0.621371;
+
 export const EQUIVALENCIES = {
   driving: {
     id: 'driving',
     name: 'Driving',
-    co2_per_unit: 120, // g CO2 per km
+    co2_per_unit: 160, // g CO2 per km (DEFRA 2023)
     unit: 'km',
     unit_plural: 'km',
+    imperial_unit: 'mi',
+    imperial_unit_plural: 'miles',
     icon: 'Car',
     template: 'Driving {value} {unit}',
     min_threshold: 50,
     max_threshold: 50000,
-    priority: 1
+    priority: 1,
+    convertible: true
   },
 
   phone_charges: {
     id: 'phone_charges',
     name: 'Phone charging',
-    co2_per_unit: 8.5, // g CO2 per full charge
+    co2_per_unit: 7, // g CO2 per full charge (Apple specs + OWID grid)
     unit: 'charge',
     unit_plural: 'charges',
     icon: 'Smartphone',
@@ -31,7 +37,7 @@ export const EQUIVALENCIES = {
   tree_hours: {
     id: 'tree_hours',
     name: 'Tree absorption',
-    co2_per_unit: 0.5, // g CO2 absorbed per hour by one tree
+    co2_per_unit: 2.5, // g CO2 absorbed per hour by one tree (US Forest Service)
     unit: 'tree-hour',
     unit_plural: 'tree-hours',
     icon: 'TreeDeciduous',
@@ -83,20 +89,23 @@ export const EQUIVALENCIES = {
   flights_km: {
     id: 'flights_km',
     name: 'Flying',
-    co2_per_unit: 255, // g CO2 per km (economy class)
+    co2_per_unit: 185, // g CO2 per km (economy class, DEFRA 2023)
     unit: 'km',
     unit_plural: 'km',
+    imperial_unit: 'mi',
+    imperial_unit_plural: 'miles',
     icon: 'Plane',
     template: 'Flying {value} {unit}',
     min_threshold: 500,
     max_threshold: 500000,
-    priority: 7
+    priority: 7,
+    convertible: true
   },
 
   balloons: {
     id: 'balloons',
     name: 'Balloons of CO₂',
-    co2_per_unit: 10, // 10g fills a standard balloon
+    co2_per_unit: 28, // 28g fills a standard 11" balloon (Engineering Toolbox)
     unit: 'balloon',
     unit_plural: 'balloons',
     icon: 'Circle',
@@ -104,6 +113,48 @@ export const EQUIVALENCIES = {
     min_threshold: 1,
     max_threshold: 10000,
     priority: 8
+  },
+
+  showers: {
+    id: 'showers',
+    name: 'Hot showers',
+    co2_per_unit: 1400, // 8-minute shower (175g/min × 8)
+    unit: 'shower',
+    unit_plural: 'showers',
+    icon: 'ShowerHead',
+    template: '{value} hot {unit}',
+    min_threshold: 500,
+    max_threshold: 50000,
+    priority: 9
+  },
+
+  eggs_cooked: {
+    id: 'eggs_cooked',
+    name: 'Eggs',
+    co2_per_unit: 234, // per egg (Poore & Nemecek)
+    unit: 'egg',
+    unit_plural: 'eggs',
+    icon: 'Egg',
+    template: '{value} {unit}',
+    min_threshold: 100,
+    max_threshold: 20000,
+    priority: 10
+  },
+
+  train_km: {
+    id: 'train_km',
+    name: 'Train travel',
+    co2_per_unit: 35.5, // g CO2 per km (intercity train)
+    unit: 'km',
+    unit_plural: 'km',
+    imperial_unit: 'mi',
+    imperial_unit_plural: 'miles',
+    icon: 'TrainFront',
+    template: '{value} {unit} by train',
+    min_threshold: 100,
+    max_threshold: 100000,
+    priority: 11,
+    convertible: true
   }
 };
 
@@ -111,9 +162,10 @@ export const EQUIVALENCIES = {
  * Generate appropriate equivalencies for a given CO2 amount
  * @param {number} co2_grams - Amount of CO2 in grams
  * @param {number} count - Number of equivalencies to return (default 4)
+ * @param {string} unitSystem - 'metric' or 'imperial' (default 'metric')
  * @returns {Array} Array of equivalency objects with calculated values
  */
-export const generateEquivalents = (co2_grams, count = 4) => {
+export const generateEquivalents = (co2_grams, count = 4, unitSystem = 'metric') => {
   const results = [];
 
   Object.values(EQUIVALENCIES).forEach(equiv => {
@@ -122,7 +174,12 @@ export const generateEquivalents = (co2_grams, count = 4) => {
       return;
     }
 
-    const rawValue = co2_grams / equiv.co2_per_unit;
+    let rawValue = co2_grams / equiv.co2_per_unit;
+
+    // Convert to imperial if needed for convertible units
+    if (unitSystem === 'imperial' && equiv.convertible) {
+      rawValue = rawValue * KM_TO_MILES;
+    }
 
     // Format the value nicely
     let displayValue;
@@ -136,8 +193,13 @@ export const generateEquivalents = (co2_grams, count = 4) => {
       displayValue = rawValue.toFixed(2).replace(/\.?0+$/, '');
     }
 
-    // Determine singular or plural
-    const unit = rawValue === 1 ? equiv.unit : equiv.unit_plural;
+    // Determine singular or plural with unit system support
+    let unit;
+    if (unitSystem === 'imperial' && equiv.convertible) {
+      unit = rawValue === 1 ? equiv.imperial_unit : equiv.imperial_unit_plural;
+    } else {
+      unit = rawValue === 1 ? equiv.unit : equiv.unit_plural;
+    }
 
     results.push({
       ...equiv,

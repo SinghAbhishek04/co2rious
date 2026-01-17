@@ -1,0 +1,8 @@
+# CO₂rious - Carbon Footprint Calculator
+# https://co2rious.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://co2rious.com/sitemap.xml

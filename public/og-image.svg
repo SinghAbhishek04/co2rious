@@ -1,0 +1,35 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="100%" style="stop-color:#1a1a1a"/>
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="100%" style="stop-color:#16a34a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="300" fill="#22c55e" opacity="0.05"/>
+  <circle cx="1100" cy="530" r="250" fill="#22c55e" opacity="0.05"/>
+
+  <!-- Logo/Icon -->
+  <text x="600" y="200" font-size="100" text-anchor="middle" fill="#ffffff">🌱</text>
+
+  <!-- Title -->
+  <text x="600" y="320" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="700" text-anchor="middle" fill="url(#greenGradient)">CO₂rious</text>
+
+  <!-- Tagline -->
+  <text x="600" y="400" font-family="Inter, system-ui, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#a1a1aa">Get curious about your carbon footprint</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="480" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="#71717a">Transform carbon numbers into relatable equivalencies</text>
+
+  <!-- URL -->
+  <text x="600" y="570" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="500" text-anchor="middle" fill="#22c55e">co2rious.com</text>
+</svg>

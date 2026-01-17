@@ -3,12 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Search, X } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { ACTIVITIES, CATEGORIES } from '../data/activities';
+import { usePreferences } from '../context/PreferencesContext';
+import { getCO2PerUnit } from '../utils/co2Calculator';
+import { getDisplayUnit } from '../config/units';
 
 export default function ActivityDropdown({ selectedActivity, onSelect }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
+  const { country, unitSystem } = usePreferences();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -177,10 +181,14 @@ export default function ActivityDropdown({ selectedActivity, onSelect }) {
                         <div className="flex-1 min-w-0">
                           <div className="font-medium truncate">{activity.name}</div>
                           <div className="text-xs text-slate-500">
-                            ~{activity.co2_per_unit >= 1000
-                              ? `${(activity.co2_per_unit / 1000).toFixed(1)}kg`
-                              : `${activity.co2_per_unit}g`
-                            } CO₂ per {activity.unit}
+                            {(() => {
+                              const co2Info = getCO2PerUnit(activity, country.code, unitSystem);
+                              const displayUnit = getDisplayUnit(activity.unit, unitSystem);
+                              return `~${co2Info.value >= 1000
+                                ? `${(co2Info.value / 1000).toFixed(1)}kg`
+                                : `${co2Info.value}g`
+                              } CO₂ per ${displayUnit}`;
+                            })()}
                           </div>
                         </div>
                       </button>
